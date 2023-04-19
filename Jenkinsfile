@@ -7,7 +7,7 @@ node {
     stage('Update Submodules') {
         sh 'git submodule update --remote --merge --recursive'
         sh 'git add .'
-        sh 'git commit -m "Update submodules" || true'  // Permet d'éviter une erreur si aucune modification n'est détectée
+        sh 'git commit -m "Update submodulexs" || true'  // Permet d'éviter une erreur si aucune modification n'est détectée
         sh 'git push --set-upstream origin main'
     }
 }
