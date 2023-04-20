@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  nom_du_micro_service:
+    build: .
+    image: maven:3.8.4-openjdk-17
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - /app/target
+      - ~/.m2:/root/.m2
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    command: "mvn -f /app/pom.xml org.springframework.boot:spring-boot-maven-plugin:3.0.5:run"
+    working_dir: /app
+
+  db:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=nom_de_la_base_de_donnees
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    volumes:
+      - ./data:/var/lib/mysql
