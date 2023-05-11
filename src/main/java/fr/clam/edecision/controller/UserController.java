@@ -19,11 +19,6 @@ public class UserController {
         this.repository = repository;
     }
 
-    @GetMapping("/test")
-    String test() {
-        return "Hello World!";
-    }
-
     @PostMapping("/login")
     Object login(@RequestBody Map<String, String> body) {
         List<User> users = repository.findByUsername(body.get("username"));
