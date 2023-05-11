@@ -21,7 +21,7 @@ public class LoadDatabase {
             User user = new User("test", "test", "test@test.fr", UserType.DEV);
             log.info("Preloading " + repository.save(user));
             log.info(user.getUuid().toString());
-            log.info("Preloading " + repository.save(new User("test", "test", "test@test.fr", UserType.DEV)));
+            log.info("Preloading " + repository.save(new User("test32", "test", "test@test.fr", UserType.DEV)));
             log.info("Preloading " + repository.save(new User("test2", "test2", "test2@test.fr", UserType.DEV)));
         };
     }

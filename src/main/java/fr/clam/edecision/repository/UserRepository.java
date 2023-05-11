@@ -10,8 +10,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends CrudRepository<User, UUID> {
-    Optional<User> loginUsername(String username);
-    Optional<User> loginEmail(String email);
+    List<User> findByUsername(String username);
+    List<User> findByEmail(String email);
 
     List<User> findByType(UserType type);
 }

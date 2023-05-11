@@ -3,11 +3,10 @@ package fr.clam.edecision.controller;
 import fr.clam.edecision.entity.User;
 import fr.clam.edecision.entity.UserType;
 import fr.clam.edecision.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,19 +25,25 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    String login(@RequestBody Map<String, String> body) {
-        Optional<User> user;
-        if (body.containsKey("username")) {
-            user = repository.loginUsername(body.get("username"));
-        } else {
-            user = repository.loginEmail(body.get("email"));
+    Object login(@RequestBody Map<String, String> body) {
+        List<User> users = repository.findByUsername(body.get("username"));
+
+        if(users.size() == 0) {
+            users = repository.findByEmail(body.get("email"));
         }
-        String password = body.get("password");
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        if (user.isPresent() && encoder.matches(password, user.get().getPassword())) {
-            return user.get().getUuid().toString();
+
+        if(users.size() == 1) {
+            User user = users.get(0);
+            String password = body.get("password");
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (encoder.matches(password, user.getPassword())) {
+                return user;
+            }
+        }else if (users.size() == 0) {
+            return "user not found";
         }
-        return "connexion failed";
+
+        return "password incorrect";
     }
 
     @PostMapping("/register")
@@ -56,6 +61,11 @@ public class UserController {
     @GetMapping("/findUserByType/{type}")
     Iterable<User> getUserByType(@PathVariable String type) {
         return repository.findByType(UserType.valueOf(type));
+    }
+
+    @GetMapping("/users")
+    Iterable<User> getAllUsers() {
+        return repository.findAll();
     }
 
 }
