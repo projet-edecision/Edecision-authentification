@@ -42,7 +42,7 @@ jobs:
         run: mvn clean verify
         env:
           SPRING_PROFILES_ACTIVE: dev
-          DB_URL: db:3306
+          DB_URL: localhost:3306
           MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
           MYSQL_USER: ${{ secrets.MYSQL_USER }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
