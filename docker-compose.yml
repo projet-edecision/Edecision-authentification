@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  nom_du_micro_service:
+  auth:
     build: .
     image: maven:3.8.4-openjdk-17
     ports:
@@ -11,6 +11,10 @@ services:
       - ~/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=db:3306
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     command: "mvn -f /app/pom.xml org.springframework.boot:spring-boot-maven-plugin:3.0.5:run"
     working_dir: /app
 
@@ -19,9 +23,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password
-      - MYSQL_DATABASE=nom_de_la_base_de_donnees
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - ./data:/var/lib/mysql
