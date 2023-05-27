@@ -28,4 +28,37 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - ./data:/var/lib/mysql
+      - bd_authentification:/var/lib/mysql
+
+  #Oauth
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - bd_keycloak:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: keycloak
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: password
+
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      MYSQL_USER: keycloak
+      MYSQL_DATABASE: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Pa55w0rd
+    ports:
+      - "8081:8080"
+    volumes:
+      - keycloack:/tmp
+volumes:
+  bd_keycloak:
+    driver: local
+  bd_authentification:
+    driver: local
+  keycloack:
+    driver: local
