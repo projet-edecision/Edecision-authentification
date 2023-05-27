@@ -7,7 +7,6 @@ services:
       - "8080:8080"
     volumes:
       - .:/app
-      - /app/target
       - ~/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
@@ -15,7 +14,7 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    command: "mvn -f /app/pom.xml org.springframework.boot:spring-boot-maven-plugin:3.0.5:run"
+    command: "mvn spring-boot:run"
     working_dir: /app
 
   db:
