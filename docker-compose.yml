@@ -11,14 +11,16 @@ services:
       - ~/.m2:/root/.m2
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DB_URL=db:3306
+      - DB_URL=db_service:3306
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     command: "mvn spring-boot:run"
     working_dir: /app
+    depends_on:
+      - db_service
 
-  db:
+  db_service:
     image: mariadb
     ports:
       - "3306:3306"
@@ -32,7 +34,23 @@ services:
 
   #Oauth
 
-  mysql:
+  keycloak:
+    image: jboss/keycloak
+    environment:
+      MYSQL_USER: keycloak
+      MYSQL_DATABASE: keycloak
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+    ports:
+      - "8081:8080"
+    volumes:
+      - keycloack:/tmp
+    depends_on:
+      - db_keycloack
+
+  db_keycloack:
     image: mysql:5.7
     volumes:
       - bd_keycloak:/var/lib/mysql
@@ -41,20 +59,6 @@ services:
       MYSQL_DATABASE: keycloak
       MYSQL_USER: keycloak
       MYSQL_PASSWORD: password
-
-  keycloak:
-    image: jboss/keycloak
-    environment:
-      MYSQL_USER: keycloak
-      MYSQL_DATABASE: keycloak
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
-    ports:
-      - "8081:8080"
-    volumes:
-      - keycloack:/tmp
 volumes:
   bd_keycloak:
     driver: local
