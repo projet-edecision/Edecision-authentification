@@ -36,4 +36,4 @@ jobs:
         ssh-keyscan -H ${{ secrets.SERVER_IP }} > ~/.ssh/known_hosts
 
     - name: Deploy to server
-      run: ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "cd /home/debian/Edecision/authentification && docker pull ${{ secrets.DOCKERHUB_USERNAME }}/auth:latest && docker compose -f docker-compose.yml up --build -d"
+      run: ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "cd /home/ubuntu/EDecision/authentification && docker pull ${{ secrets.DOCKERHUB_USERNAME }}/auth:latest && docker compose -f docker-compose.yml up --build -d"
