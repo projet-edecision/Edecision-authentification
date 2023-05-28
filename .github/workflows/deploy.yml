@@ -41,4 +41,3 @@ jobs:
         cd /home/debian/Edecision/authentification
         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/auth:latest
         docker-compose -f docker-compose.yml up --build -d
-EOF
