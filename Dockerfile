@@ -1,6 +1,10 @@
-FROM maven:3.8.4-openjdk-17
+# Étape de build
+FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
-COPY . /app
-RUN mvn clean install -DskipTests
-RUN mvn package
-ENTRYPOINT ["java", "-jar", "target/authentification.jar"]
+COPY . .
+RUN mvn clean package -DskipTests
+
+# Étape de production
+FROM openjdk:17
+COPY --from=build /app/target/*.jar /app.jar
+CMD ["java", "-jar", "/app.jar"]
