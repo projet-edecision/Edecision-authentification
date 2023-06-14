@@ -77,6 +77,5 @@ jobs:
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SERVER_IP }} > ~/.ssh/known_hosts
-
     - name: Deploy to server
       run: ssh ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "cd /home/ubuntu/Edecision/authentification && docker pull ${{ secrets.DOCKERHUB_USERNAME }}/auth:latest && docker compose up -d"
