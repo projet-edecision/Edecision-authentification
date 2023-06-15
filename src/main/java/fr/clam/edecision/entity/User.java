@@ -19,6 +19,8 @@ public class User {
 
     private UserType type;
 
+    private String token;
+
     public User() {
         this.uuid = UUID.randomUUID();
     }
@@ -29,6 +31,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.type = type;
+        this.token = "";
     }
 
     public UUID getUuid() {
@@ -69,5 +72,13 @@ public class User {
 
     public void setType(UserType type) {
         this.type = type;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
